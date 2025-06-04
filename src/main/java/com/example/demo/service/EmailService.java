@@ -10,10 +10,10 @@ import java.util.Properties;
 public class EmailService {
 
     // Google應用程式密碼
-    private final String googleAppPassword = "你的應用程式密碼";
+    private final String googleAppPassword = "kqnz ctfa fmps xyas";
 
     // 寄件者的 Gmail 帳號
-    private final String from = "你的Gmail帳號@gmail.com";
+    private final String from = "exe1379@gmail.com";
 
     public void sendEmail(String to, String confirmUrl) {
         String host = "smtp.gmail.com";
