@@ -1,0 +1,7 @@
+package com.example.demo.service;
+
+import com.example.demo.model.dto.UserCert;
+
+public interface CertService {
+	UserCert getCert(String userName, String password) throws RuntimeException;
+}
