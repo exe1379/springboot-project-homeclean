@@ -43,7 +43,11 @@ public class User {
 	@Column(name = "phone")
 	private String phoneNumber;
 	@Column(name = "created_at")
-	private LocalDateTime date;
+	private LocalDateTime createdDate;
+	@Column(name = "enabled")
+	private boolean enabled = false;
+	@Column(name = "email_token")
+	private String emailToken;
 	@OneToMany(mappedBy = "user")
 	private List<Booking> bookings;
 	@OneToMany(mappedBy = "user")

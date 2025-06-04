@@ -13,6 +13,6 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	List<User> findAllWithReviews();
 	@Query("select u from User u left join fetch u.bookings")
 	List<User> findAllWithBookings();
-	@Query(value = "select id, username, name, email, phone, hash_password, hash_salt, role, created_at from user where username =:username", nativeQuery = true)
-	User getUser(String username);
+	
+	User findByUserName(String username);
 }

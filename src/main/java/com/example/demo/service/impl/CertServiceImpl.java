@@ -18,12 +18,12 @@ public class CertServiceImpl implements CertService {
 
 	@Override
 	public UserCert getCert(String userName, String password) throws UserNotFoundException, PasswordInvalidException {
-		User user = userRepository.getUser(userName);
+		User user = userRepository.findByUserName(userName);
 		if(user.getUserName() == null) {
 			throw new UserNotFoundException("使用者名稱不存在");
 		}
 		String hashPassword = Hash.getHash(password, user.getSalt());
-		if(hashPassword != user.getPasswordHash()) {
+		if(!hashPassword.equals(user.getPasswordHash())) {
 			throw new PasswordInvalidException("密碼輸入錯誤");
 		}
 		UserCert userCert = new UserCert(user.getUserId(), user.getUserName(), user.getRole());
