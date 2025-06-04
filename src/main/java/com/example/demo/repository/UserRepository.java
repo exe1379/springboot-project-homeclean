@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.model.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer>{
-	@Query("select u from user u left join fetch u.Review")
+	@Query("select u from User u left join fetch u.reviews")
 	List<User> findAllWithReviews();
-	@Query("select u from user u left join fetch u.booking")
+	@Query("select u from User u left join fetch u.bookings")
 	List<User> findAllWithBookings();
 	@Query(value = "select id, username, name, email, phone, hash_password, hash_salt, role, created_at from user where username =:username", nativeQuery = true)
 	User getUser(String username);
