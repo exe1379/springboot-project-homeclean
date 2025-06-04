@@ -15,4 +15,6 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	List<User> findAllWithBookings();
 	
 	User findByUserName(String username);
+	
+	User findByEmailToken(String emailToken);
 }

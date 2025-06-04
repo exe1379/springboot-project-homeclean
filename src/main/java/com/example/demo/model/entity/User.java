@@ -44,8 +44,8 @@ public class User {
 	private String phoneNumber;
 	@Column(name = "created_at")
 	private LocalDateTime createdDate;
-	@Column(name = "enabled")
-	private boolean enabled = false;
+	@Column(nullable = false)
+	private boolean emailVerified;
 	@Column(name = "email_token")
 	private String emailToken;
 	@OneToMany(mappedBy = "user")
