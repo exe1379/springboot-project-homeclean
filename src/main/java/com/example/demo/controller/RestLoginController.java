@@ -3,11 +3,12 @@ package com.example.demo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.exception.CertException;
 import com.example.demo.model.dto.UserCert;
@@ -16,7 +17,7 @@ import com.example.demo.service.CertService;
 
 import jakarta.servlet.http.HttpSession;
 
-@Controller
+@RestController
 @RequestMapping("/login")
 @CrossOrigin(origins = {"http://localhost:5173"}, allowCredentials = "true")
 public class RestLoginController {
@@ -24,7 +25,7 @@ public class RestLoginController {
 	@Autowired
 	private CertService certService;
 	
-	@PostMapping("/login")
+	@PostMapping("")
 	public ResponseEntity<ApiResponse<Void>> login(@RequestParam String username,@RequestParam String password, HttpSession session){
 		   try {
 			   UserCert cert = certService.getCert(username, password);
@@ -34,5 +35,20 @@ public class RestLoginController {
 			   return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
 					  .body(ApiResponse.error(401, "登入失敗" + e.getMessage()));
 		   }
+	}
+	@GetMapping("/logout")
+	public ResponseEntity<ApiResponse<Void>> logout(HttpSession session){
+		if(session.getAttribute("UserCert") == null ) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+				   .body(ApiResponse.error(401, "登出失敗"));
+		}
+		session.invalidate();
+		return ResponseEntity.ok(ApiResponse.success("登出成功", null));
+	}
+	
+	@GetMapping("/check-login")
+	public ResponseEntity<ApiResponse<Boolean>> checklogin(HttpSession session){
+		boolean loggedIn = session.getAttribute("UserCert") != null;
+		return ResponseEntity.ok(ApiResponse.success("檢查登入", loggedIn));
 	}
 }
