@@ -37,16 +37,23 @@ public class UserRegisterServiceImpl implements UserRegisterService {
 			user.setSalt(hashSalt);
 			user.setEmail(email);
 			user.setRole(Role.user);
+			user.setEmailToken(token);
 			user.setCreatedDate(LocalDateTime.now());
 			userRepository.save(user);
 			
 			String confirmEmail = "http://localhost:8080/api/email/confirm?token=" + token;
-			emailService.sendEmail(token, confirmEmail);
+			emailService.sendEmail(email, confirmEmail);
 	}
 
 	@Override
-	public void emailConfiration(String username) {
-		
+	public void emailConfirmation(String token) {
+		User user = userRepository.findByEmailToken(token);
+		if(user == null) {
+			throw new IllegalArgumentException("無效的驗證連結");
+		}
+		user.setEmailVerified(true);
+		user.setEmailToken(null);
+		userRepository.save(user);
 	}
 
 }
