@@ -12,5 +12,5 @@ public class UserCert {
 	private Integer userId;
 	private String userName;
 	private Role role;
-	
+	private Boolean emailVerified;
 }

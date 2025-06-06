@@ -43,7 +43,7 @@ public class UserRegisterServiceImpl implements UserRegisterService {
 			user.setCreatedDate(LocalDateTime.now());
 			userRepository.save(user);
 			
-			String confirmEmail = "http://localhost:8080/api/email/confirm?token=" + token;
+			String confirmEmail = "http://localhost:8081/api/email/confirm?token=" + token;
 			emailService.sendEmail(email, confirmEmail);
 	}
 
