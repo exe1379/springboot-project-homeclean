@@ -22,24 +22,39 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "booking")
 public class Booking {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer bookingId;
+	
 	@Column(name = "location")
 	private String location;
+	
 	@Column(name = "note")
 	private String note;
 	@Column(name = "service_id")
 	private Integer serviceId;
+	
 	@Column(name = "staff_id")
 	private Integer staffId;
+	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status" , nullable = false)
 	private Status status;
+	
 	@Column(name = "time")
 	private LocalDate time;
+	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
+	
+	@ManyToOne
+	@JoinColumn(name = "service_id", insertable = false, updatable = false)
+	private Service service;
+	
+	@ManyToOne
+	@JoinColumn(name = "staff_id", insertable = false , updatable = false)
+	private Staff staff;
 }

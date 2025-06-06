@@ -36,7 +36,9 @@ public class UserRegisterServiceImpl implements UserRegisterService {
 			user.setPasswordHash(hashPassword);
 			user.setSalt(hashSalt);
 			user.setEmail(email);
-			user.setRole(Role.user);
+			user.setName("");
+			user.setRole(Role.USER);
+			user.setPhoneNumber("");
 			user.setEmailToken(token);
 			user.setCreatedDate(LocalDateTime.now());
 			userRepository.save(user);

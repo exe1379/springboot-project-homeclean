@@ -18,14 +18,14 @@ import com.example.demo.service.CertService;
 import jakarta.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/user")
 @CrossOrigin(origins = {"http://localhost:5173"}, allowCredentials = "true")
 public class RestLoginController {
 	
 	@Autowired
 	private CertService certService;
 	
-	@PostMapping("")
+	@PostMapping("/login")
 	public ResponseEntity<ApiResponse<Void>> login(@RequestParam String username,@RequestParam String password, HttpSession session){
 		   try {
 			   UserCert cert = certService.getCert(username, password);

@@ -44,4 +44,16 @@ public class Review {
 	@ManyToOne
 	@JoinColumn(name = "user_id", insertable = false, updatable = false)
 	private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "staff_id", insertable = false, updatable = false)
+    private Staff staff;
+
+    @ManyToOne
+    @JoinColumn(name = "service_id", insertable = false, updatable = false)
+    private Service service;
+
+    @ManyToOne
+    @JoinColumn(name = "booking_id", insertable = false, updatable = false)
+    private Booking booking;
 }
