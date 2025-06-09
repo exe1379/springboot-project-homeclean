@@ -53,14 +53,10 @@ public class UserBookingServiceImpl implements UserBookingService {
 	}
 
 	@Override
-	public void createBooking(BookingRequestDto bookingRequestDto, String username) {
-		com.example.demo.model.entity.Service service = serviceRepository
-		        .findById(bookingRequestDto.getServiceId())
-		        .orElseThrow(() -> new RuntimeException("找不到服務"));
-		Booking booking = convertToBookingEntity(bookingRequestDto, username);
-		booking.setService(service);
-		bookingRepository.save(booking);
-	}
+        public void createBooking(BookingRequestDto bookingRequestDto, String username) {
+                Booking booking = convertToBookingEntity(bookingRequestDto, username);
+                bookingRepository.save(booking);
+        }
 
 	@Override
 	public void deleteBooking(Integer bookingId, String username) {
@@ -95,7 +91,7 @@ public class UserBookingServiceImpl implements UserBookingService {
 	private Booking convertToBookingEntity(BookingRequestDto dto, String username) {
 	    User user = userRepository.findByUserName(username);
 	    
-	    com.example.demo.model.entity.Service  service = serviceRepository.findById(dto.getServiceId())
+            com.example.demo.model.entity.Service service = serviceRepository.findById(dto.getServiceId())
                 .orElseThrow(() -> new RuntimeException("找不到服務"));
 	
 	    Staff staff = null;
@@ -103,12 +99,13 @@ public class UserBookingServiceImpl implements UserBookingService {
 	        staff = staffRepository.findById(dto.getStaffId())
 	                 .orElseThrow(() -> new RuntimeException("找不到員工"));
 	    }
-	    Booking booking = new Booking();
-	    booking.setUser(user);
-	    booking.setServiceId(dto.getServiceId());
-	    booking.setLocation(dto.getLocation());
-	    booking.setNote(dto.getNote());
-	    booking.setTime(dto.getTime());
+            Booking booking = new Booking();
+            booking.setUser(user);
+            booking.setServiceId(dto.getServiceId());
+            booking.setService(service);
+            booking.setLocation(dto.getLocation());
+            booking.setNote(dto.getNote());
+            booking.setTime(dto.getTime());
 	    booking.setStatus(Status.RESERVED); // 預設狀態
 	    if (staff != null) {
 	        booking.setStaffId(dto.getStaffId());
