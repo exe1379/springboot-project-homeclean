@@ -51,8 +51,10 @@ public class UserBookingRestController {
 		return ResponseEntity.ok(ApiResponse.success("新增預約成功", null));
 	}
 	
-	@PutMapping("/{id}")
-	public ResponseEntity<ApiResponse<BookingDisplayDto>> updateBooking(@RequestBody BookingRequestDto dto, @PathVariable Integer bookingId, HttpSession session){
+        @PutMapping("/{id}")
+        public ResponseEntity<ApiResponse<BookingDisplayDto>> updateBooking(@RequestBody BookingRequestDto dto,
+                        @PathVariable("id") Integer bookingId,
+                        HttpSession session){
 		UserCert cert = (UserCert) session.getAttribute("UserCert");
 		BookingDisplayDto updatedDto = userBookingService.updateBooking(dto, bookingId, cert.getUserName());
 		return ResponseEntity.ok(ApiResponse.success("更新成功", updatedDto));
