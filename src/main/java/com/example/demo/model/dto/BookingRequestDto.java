@@ -8,12 +8,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookingDisplayDto {
-	private Integer bookingId;
+public class BookingRequestDto {
+	private Integer staffId;
+	private Integer serviceId;
 	private String location;
 	private String note;
-	private String serviceName;
-	private String staffName;
-	private String status;
 	private LocalDateTime time;
 }

@@ -1,6 +1,7 @@
 package com.example.demo.model.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,6 +34,7 @@ public class Booking {
 	
 	@Column(name = "note")
 	private String note;
+	
 	@Column(name = "service_id")
 	private Integer serviceId;
 	
@@ -44,7 +46,7 @@ public class Booking {
 	private Status status;
 	
 	@Column(name = "time")
-	private LocalDate time;
+	private LocalDateTime time;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
