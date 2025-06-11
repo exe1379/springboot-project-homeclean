@@ -1,6 +1,5 @@
 package com.example.demo.model.entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -54,7 +53,7 @@ public class Booking {
 	
 	@ManyToOne
 	@JoinColumn(name = "service_id", insertable = false, updatable = false)
-	private Service service;
+	private ServiceEntity service;
 	
 	@ManyToOne
 	@JoinColumn(name = "staff_id", insertable = false , updatable = false)

@@ -52,7 +52,7 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "service_id", insertable = false, updatable = false)
-    private Service service;
+    private ServiceEntity service;
 
     @OneToOne
     @JoinColumn(name = "booking_id", insertable = false, updatable = false)

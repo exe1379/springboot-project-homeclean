@@ -10,6 +10,7 @@ import com.example.demo.exception.AccessDeniedException;
 import com.example.demo.model.dto.BookingDisplayDto;
 import com.example.demo.model.dto.BookingRequestDto;
 import com.example.demo.model.entity.Booking;
+import com.example.demo.model.entity.ServiceEntity;
 import com.example.demo.model.entity.Staff;
 import com.example.demo.model.entity.Status;
 import com.example.demo.model.entity.User;
@@ -54,7 +55,7 @@ public class UserBookingServiceImpl implements UserBookingService {
 
 	@Override
 	public void createBooking(BookingRequestDto bookingRequestDto, String username) {
-		com.example.demo.model.entity.Service service = serviceRepository
+		ServiceEntity service = serviceRepository
 		        .findById(bookingRequestDto.getServiceId())
 		        .orElseThrow(() -> new RuntimeException("找不到服務"));
 		Booking booking = convertToBookingEntity(bookingRequestDto, username);
@@ -95,7 +96,7 @@ public class UserBookingServiceImpl implements UserBookingService {
 	private Booking convertToBookingEntity(BookingRequestDto dto, String username) {
 	    User user = userRepository.findByUserName(username);
 	    
-	    com.example.demo.model.entity.Service  service = serviceRepository.findById(dto.getServiceId())
+	    ServiceEntity  service = serviceRepository.findById(dto.getServiceId())
                 .orElseThrow(() -> new RuntimeException("找不到服務"));
 	
 	    Staff staff = null;

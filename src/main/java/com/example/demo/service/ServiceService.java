@@ -3,7 +3,6 @@ package com.example.demo.service;
 import java.util.List;
 
 import com.example.demo.model.dto.ServiceDto;
-import com.example.demo.model.entity.Service;
 
 public interface ServiceService {
 	
