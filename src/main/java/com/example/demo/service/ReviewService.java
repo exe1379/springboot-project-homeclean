@@ -10,11 +10,13 @@ public interface ReviewService {
 	
 	public List<ReviewDto> getReviewsByUser(Integer userId);
 	
+	public List<ReviewDto> getReviewByStaffId(Integer staffId);
+	
 	public ReviewDto getReviewById(Integer reviewId);
 	
 	public void createReview(ReviewDto reviewDto, Integer userId);
 	
 	public void deleteReview(Integer reviewId, Integer userId);
 	
-	public void updateReview(Integer reviewId, ReviewDto reviewDto);
+	public void updateReview(Integer reviewId, ReviewDto reviewDto, Integer userId);
 }

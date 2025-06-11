@@ -1,6 +1,5 @@
 package com.example.demo.service.impl;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +51,7 @@ public class ReviewServiceImpl implements ReviewService {
 	
 	@Override
 	public void createReview(ReviewDto reviewDto, Integer currentUserId) {
-		Booking booking = bookingRepository.findById(currentUserId)
+		Booking booking = bookingRepository.findById(reviewDto.getBookingId())
 				.orElseThrow(() ->new ResourceNotFoundException("查無預約"));
 		if(!booking.getUser().getUserId().equals(currentUserId)) {
 			throw new AccessDeniedException("只能對自己的預約評論");
@@ -64,7 +63,6 @@ public class ReviewServiceImpl implements ReviewService {
 			throw new AccessDeniedException("已對此預約進行評論");
 		}
 		Review review = reviewMapper.ToEntity(reviewDto, currentUserId);
-		review.setCreatedAt(LocalDateTime.now());
 		reviewRepository.save(review);
 		
 		Double avgRating = reviewRepository.calculateAverageRatingByStaffId(reviewDto.getStaffId());
@@ -77,18 +75,30 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public void deleteReview(Integer reviewId, Integer userId) {
+		
 		Review review = reviewRepository.findById(reviewId)
 				.orElseThrow(() -> new ResourceNotFoundException("查無評論"));
+		if(!review.getUserId().equals(userId)) {
+			throw new AccessDeniedException("您並無權限刪除他人的評論");
+		}
 		reviewRepository.delete(review);
 	}
 
 	@Override
-	public void updateReview(Integer reviewId, ReviewDto reviewDto) {
+	public void updateReview(Integer reviewId, ReviewDto reviewDto, Integer userId) {
 		Review review = reviewRepository.findById(reviewId)
 				.orElseThrow(() -> new ResourceNotFoundException("查無評論"));
+		if(!review.getUserId().equals(userId)) {
+			throw new AccessDeniedException("只能修改自己的評論");
+		}
+		Double avgRating = reviewRepository.calculateAverageRatingByStaffId(review.getStaffId());
 		review.setComment(reviewDto.getComment());
 		review.setRating(reviewDto.getRating());
 		reviewRepository.save(review);
+		Staff staff = staffRepository.findById(review.getStaffId())
+				.orElseThrow(() -> new ResourceNotFoundException("查無員工"));
+		staff.setRating(avgRating);
+		staffRepository.save(staff);
 	}
 
 	@Override
@@ -97,5 +107,13 @@ public class ReviewServiceImpl implements ReviewService {
 		List<ReviewDto> dtos = reviews.stream().map(reviewMapper::toDto)
 		.toList();
 		return dtos;
+	}
+
+	@Override
+	public List<ReviewDto> getReviewByStaffId(Integer staffId) {
+		return reviewRepository.findByStaffId(staffId)
+				.stream()
+				.map(reviewMapper::toDto)
+				.toList();
 	}
 }
