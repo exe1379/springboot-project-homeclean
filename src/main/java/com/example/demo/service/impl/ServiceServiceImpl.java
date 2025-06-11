@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.exception.ServiceNotFoundException;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.mapper.ServiceMapper;
 import com.example.demo.model.dto.ServiceDto;
 import com.example.demo.model.entity.ServiceEntity;
@@ -31,14 +31,14 @@ public class ServiceServiceImpl implements ServiceService {
 	@Override
 	public ServiceDto getServiceById(Integer serviceId) {
 		ServiceEntity service = serviceRepository.findById(serviceId)
-				.orElseThrow(() -> new ServiceNotFoundException("查無服務"));
+				.orElseThrow(() -> new ResourceNotFoundException("查無服務"));
 		return serviceMapper.toDto(service);
 	}
 
 	@Override
 	public void deleteService(Integer serviceId) {
 		ServiceEntity service = serviceRepository.findById(serviceId)
-				.orElseThrow(() -> new ServiceNotFoundException("查無服務"));
+				.orElseThrow(() -> new ResourceNotFoundException("查無服務"));
 		serviceRepository.delete(service);
 	}
 
@@ -51,7 +51,7 @@ public class ServiceServiceImpl implements ServiceService {
 	@Override
 	public void updateService(Integer serviceId, ServiceDto dto) {
 		ServiceEntity service = serviceRepository.findById(serviceId)
-				.orElseThrow(() -> new ServiceNotFoundException("查無服務"));
+				.orElseThrow(() -> new ResourceNotFoundException("查無服務"));
 
 		service.setServiceName(dto.getServiceName());
 		service.setPrice(dto.getPrice());
@@ -61,5 +61,4 @@ public class ServiceServiceImpl implements ServiceService {
 
 		serviceRepository.save(service);
 	}
-
 }

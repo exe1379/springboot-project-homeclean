@@ -26,22 +26,30 @@ public class Review {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer reviewId;
+	
 	@Column(name = "booking_id")
 	private Integer bookingId;
+	
 	@Column(name = "user_id")
 	private Integer userId;
+	
 	@Column(name = "staff_id")
 	private Integer staffId;
+	
 	@Column(name = "service_Id")
 	private Integer serviceId;
+	
 	@Min(1)
 	@Max(5)
 	@Column(name = "rating")
 	private Integer rating;
+	
 	@Column(name = "comment")
 	private String comment;
+	
 	@Column(name = "created_at")
 	private LocalDateTime createdAt;
+	
 	@ManyToOne
 	@JoinColumn(name = "user_id", insertable = false, updatable = false)
 	private User user;

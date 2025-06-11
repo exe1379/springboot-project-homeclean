@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.exception.EmailNotVerifiedException;
 import com.example.demo.exception.PasswordInvalidException;
-import com.example.demo.exception.UserNotFoundException;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.dto.UserCert;
 import com.example.demo.model.entity.User;
 import com.example.demo.repository.UserRepository;
@@ -18,10 +18,10 @@ public class CertServiceImpl implements CertService {
 	private UserRepository userRepository;
 
 	@Override
-	public UserCert getCert(String userName, String password) throws UserNotFoundException, PasswordInvalidException,EmailNotVerifiedException {
+	public UserCert getCert(String userName, String password) throws ResourceNotFoundException, PasswordInvalidException,EmailNotVerifiedException {
 		User user = userRepository.findByUserName(userName);
 		if(user == null) {
-			throw new UserNotFoundException("使用者名稱不存在");
+			throw new ResourceNotFoundException("使用者名稱不存在");
 		}
 		String hashPassword = Hash.getHash(password, user.getSalt());
 		if(!hashPassword.equals(user.getPasswordHash())) {
