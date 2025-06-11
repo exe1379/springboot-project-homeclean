@@ -22,7 +22,7 @@ public class EmailConfirmController {
 	public ResponseEntity<ApiResponse<String>> confirmEmail(@RequestParam String token){
 		User user = userRepository.findByEmailToken(token);
 		if(user == null) {
-			ResponseEntity.badRequest()
+		return ResponseEntity.badRequest()
 			.body(ApiResponse.error(402, "無效token,驗證失敗"));
 		}
 		user.setEmailVerified(true);

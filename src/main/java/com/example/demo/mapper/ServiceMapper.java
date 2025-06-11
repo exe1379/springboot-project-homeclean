@@ -12,7 +12,7 @@ public class ServiceMapper {
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	public Service ToEntity(ServiceDto serviceDto) {
+	public Service toEntity(ServiceDto serviceDto) {
 		return modelMapper.map(serviceDto, Service.class);
 	}
 	

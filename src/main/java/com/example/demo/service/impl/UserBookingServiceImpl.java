@@ -105,6 +105,7 @@ public class UserBookingServiceImpl implements UserBookingService {
 	    }
 	    Booking booking = new Booking();
 	    booking.setUser(user);
+	    booking.setService(service);
 	    booking.setServiceId(dto.getServiceId());
 	    booking.setLocation(dto.getLocation());
 	    booking.setNote(dto.getNote());
