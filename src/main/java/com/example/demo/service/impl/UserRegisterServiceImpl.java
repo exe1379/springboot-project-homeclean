@@ -25,9 +25,12 @@ public class UserRegisterServiceImpl implements UserRegisterService {
 	@Override
 	public void addUser(String username, String password, String email) {
 			
-			if(userRepository.findByUserName(username) != null) {
-				throw new UserAlreadyExistException("使用者已存在");
-			}
+		   if(userRepository.findByUserName(username) != null) {
+             throw new UserAlreadyExistException("使用者已存在");
+		 	}
+		   if(userRepository.findByEmail(email) != null) {
+             throw new UserAlreadyExistException("Email 已被使用");
+		 	}
 			String hashSalt = Hash.getSalt();
 			String hashPassword = Hash.getHash(password, hashSalt);
 			String token = UUID.randomUUID().toString();

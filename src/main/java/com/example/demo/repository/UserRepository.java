@@ -16,8 +16,8 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	List<User> findAllWithBookings();
 	
 	User findByUserName(String username);
-	
-	@Query("SELECT u FROM User u WHERE u.emailToken = :token")
-	User findByEmailToken(@Param("token") String token);
+		
+    User findByEmailToken(String emailToken);
 
+    User findByEmail(String email);
 }
