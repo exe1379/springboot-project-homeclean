@@ -10,7 +10,7 @@ public interface ReviewService {
 	
 	public List<ReviewDto> getReviewsByUser(Integer userId);
 	
-	public List<ReviewDto> getReviewByStaffId(Integer staffId);
+	public List<ReviewDto> getReviewsByStaffId(Integer staffId);
 	
 	public ReviewDto getReviewById(Integer reviewId);
 	

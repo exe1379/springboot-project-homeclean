@@ -17,6 +17,8 @@ import com.example.demo.repository.BookingRepository;
 import com.example.demo.repository.ReviewRepository;
 import com.example.demo.repository.StaffRepository;
 import com.example.demo.service.ReviewService;
+
+import jakarta.transaction.Transactional;
 @Service
 public class ReviewServiceImpl implements ReviewService {
 	
@@ -48,7 +50,7 @@ public class ReviewServiceImpl implements ReviewService {
 		ReviewDto dto = reviewMapper.toDto(review);
 		return dto;
 	}
-	
+	@Transactional
 	@Override
 	public void createReview(ReviewDto reviewDto, Integer currentUserId) {
 		Booking booking = bookingRepository.findById(reviewDto.getBookingId())
@@ -83,7 +85,7 @@ public class ReviewServiceImpl implements ReviewService {
 		}
 		reviewRepository.delete(review);
 	}
-
+	@Transactional
 	@Override
 	public void updateReview(Integer reviewId, ReviewDto reviewDto, Integer userId) {
 		Review review = reviewRepository.findById(reviewId)
@@ -91,12 +93,12 @@ public class ReviewServiceImpl implements ReviewService {
 		if(!review.getUserId().equals(userId)) {
 			throw new AccessDeniedException("只能修改自己的評論");
 		}
-		Double avgRating = reviewRepository.calculateAverageRatingByStaffId(review.getStaffId());
 		review.setComment(reviewDto.getComment());
 		review.setRating(reviewDto.getRating());
 		reviewRepository.save(review);
 		Staff staff = staffRepository.findById(review.getStaffId())
 				.orElseThrow(() -> new ResourceNotFoundException("查無員工"));
+		Double avgRating = reviewRepository.calculateAverageRatingByStaffId(review.getStaffId());
 		staff.setRating(avgRating);
 		staffRepository.save(staff);
 	}
@@ -110,7 +112,7 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public List<ReviewDto> getReviewByStaffId(Integer staffId) {
+	public List<ReviewDto> getReviewsByStaffId(Integer staffId) {
 		return reviewRepository.findByStaffId(staffId)
 				.stream()
 				.map(reviewMapper::toDto)

@@ -11,6 +11,8 @@ import com.example.demo.model.dto.ServiceDto;
 import com.example.demo.model.entity.ServiceEntity;
 import com.example.demo.repository.ServiceRepository;
 import com.example.demo.service.ServiceService;
+
+import jakarta.transaction.Transactional;
 @Service
 public class ServiceServiceImpl implements ServiceService {
 	
@@ -21,7 +23,7 @@ public class ServiceServiceImpl implements ServiceService {
 	private ServiceMapper serviceMapper;
 	
 	@Override
-	public List<ServiceDto> getAllService() {
+	public List<ServiceDto> getAllServices() {
 		List<ServiceEntity> services = serviceRepository.findAll();
 		return services.stream()
 				.map(serviceMapper::toDto)
@@ -43,22 +45,31 @@ public class ServiceServiceImpl implements ServiceService {
 	}
 
 	@Override
-	public void createService(ServiceDto serviceDto) {
+	public ServiceDto createService(ServiceDto serviceDto) {
+		serviceDto.setServiceId(null);
 		ServiceEntity service = serviceMapper.toEntity(serviceDto);
-		serviceRepository.save(service);
+		ServiceEntity saved = serviceRepository.save(service);
+		return serviceMapper.toDto(saved);
 	}
-
+	@Transactional
 	@Override
-	public void updateService(Integer serviceId, ServiceDto dto) {
+	public ServiceDto updateService(Integer serviceId, ServiceDto dto) {
 		ServiceEntity service = serviceRepository.findById(serviceId)
 				.orElseThrow(() -> new ResourceNotFoundException("查無服務"));
-
 		service.setServiceName(dto.getServiceName());
 		service.setPrice(dto.getPrice());
 		service.setDurationMinute(dto.getDurationMinute());
 		service.setDescription(dto.getDescription());
 		service.setActive(dto.getActive());
-
+		serviceRepository.save(service);
+		ServiceDto updated = serviceMapper.toDto(service);
+		return updated;
+	}
+	
+	public void toggleServiceActive(Integer serviceId, Boolean isActive) {
+		ServiceEntity service = serviceRepository.findById(serviceId)
+				.orElseThrow(() -> new ResourceNotFoundException("找不到該服務"));
+		service.setActive(isActive);
 		serviceRepository.save(service);
 	}
 }

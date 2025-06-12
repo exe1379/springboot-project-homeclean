@@ -41,21 +41,23 @@ public class UserRegisterServiceImpl implements UserRegisterService {
 			user.setPhoneNumber("");
 			user.setEmailToken(token);
 			user.setCreatedDate(LocalDateTime.now());
-			userRepository.save(user);
-			
-			String confirmEmail = "http://localhost:8081/api/email/confirm?token=" + token;
-			emailService.sendEmail(email, confirmEmail);
+			userRepository.saveAndFlush(user);
+			System.out.println("使用者帳號: " + username);
+			System.out.println("產生的 token: " + token);
+			System.out.println("User 對象 email_token 屬性值: " + user.getEmailToken());
+			String confirmEmail = "http://localhost:5173/verify-email?token=" + token;
+			emailService.sendEmail(user.getEmail(), confirmEmail);
 	}
 
-	@Override
-	public void emailConfirmation(String token) {
-		User user = userRepository.findByEmailToken(token);
-		if(user == null) {
-			throw new IllegalArgumentException("無效的驗證連結");
+		@Override
+		public void emailConfirmation(String token) {
+			User user = userRepository.findByEmailToken(token);
+			if(user == null) {
+				throw new IllegalArgumentException("無效的驗證連結");
+			}
+			user.setEmailVerified(true);
+			user.setEmailToken(null);
+			userRepository.save(user);
 		}
-		user.setEmailVerified(true);
-		user.setEmailToken(null);
-		userRepository.save(user);
-	}
 
 }

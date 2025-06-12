@@ -45,7 +45,7 @@ public class UserBookingServiceImpl implements UserBookingService {
 
 	@Override
 	public BookingDisplayDto getBookingById(String username, Integer bookingId) {
-		Optional<Booking> bookingOpt = bookingRepository.findByIdAndUser_UserName(bookingId, username);
+		Optional<Booking> bookingOpt = bookingRepository.findBybookingIdAndUser_UserName(bookingId, username);
 		if(bookingOpt.isPresent()) {
 			return convertToDisplayDto(bookingOpt.get());
 		}else{
@@ -65,14 +65,14 @@ public class UserBookingServiceImpl implements UserBookingService {
 
 	@Override
 	public void deleteBooking(Integer bookingId, String username) {
-		Booking booking = bookingRepository.findByIdAndUser_UserName(bookingId, username)
+		Booking booking = bookingRepository.findBybookingIdAndUser_UserName(bookingId, username)
 		.orElseThrow(() -> new AccessDeniedException("找不到該筆預約或無權限"));
 		bookingRepository.delete(booking);
 	}
 
 	@Override
 	public BookingDisplayDto updateBooking(BookingRequestDto dto, Integer bookingId, String username) {
-		Booking booking = bookingRepository.findByIdAndUser_UserName(bookingId, username)
+		Booking booking = bookingRepository.findBybookingIdAndUser_UserName(bookingId, username)
 		.orElseThrow(() -> new AccessDeniedException("找不到該筆預約或無權限"));
 		booking.setLocation(dto.getLocation());
 		booking.setNote(dto.getNote());

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.model.entity.User;
@@ -16,5 +17,7 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	
 	User findByUserName(String username);
 	
-	User findByEmailToken(String emailToken);
+	@Query("SELECT u FROM User u WHERE u.emailToken = :token")
+	User findByEmailToken(@Param("token") String token);
+
 }

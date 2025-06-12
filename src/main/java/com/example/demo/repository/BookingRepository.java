@@ -13,5 +13,5 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     List<Booking> findAllByUser_UserName(String username);
 
     // 查詢某使用者的一筆特定預約（用於授權驗證）
-    Optional<Booking> findByIdAndUser_UserName(Integer bookingId, String username);
+    Optional<Booking> findBybookingIdAndUser_UserName(Integer bookingId, String username);
 }

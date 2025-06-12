@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.exception.UserAlreadyExistException;
 import com.example.demo.model.dto.RegisterRequest;
 import com.example.demo.response.ApiResponse;
 import com.example.demo.service.UserRegisterService;
@@ -21,8 +22,13 @@ public class RegisterRestController {
 	private UserRegisterService userRegisterService;
 	
 	@PostMapping("/register")
-	public ResponseEntity<ApiResponse<Void>> register(@RequestBody RegisterRequest request){
-		userRegisterService.addUser(request.getUsername(), request.getPassword(), request.getEmail());
-		return ResponseEntity.ok(ApiResponse.success("註冊成功", null));
+	public ResponseEntity<ApiResponse<Void>> register(@RequestBody RegisterRequest request) {
+		try {
+			userRegisterService.addUser(request.getUsername(), request.getPassword(), request.getEmail());
+			return ResponseEntity.ok(ApiResponse.success("註冊成功，請至信箱點擊驗證連結", null));
+		} catch (UserAlreadyExistException e) {
+			return ResponseEntity.badRequest().body(ApiResponse.error(400, e.getMessage()));
+		}
 	}
+
 }

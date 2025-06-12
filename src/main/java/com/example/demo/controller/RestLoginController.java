@@ -30,13 +30,14 @@ public class RestLoginController {
 		   try {
 			   UserCert cert = certService.getCert(username, password);
 			   session.setAttribute("UserCert", cert);
+			   session.setAttribute("role", cert.getRole());
 			   return ResponseEntity.ok(ApiResponse.success("登入成功", null));
 		   }catch(CertException e) {
 			   return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
 					  .body(ApiResponse.error(401, "登入失敗" + e.getMessage()));
 		   }
 	}
-	@GetMapping("/logout")
+	@PostMapping("/logout")
 	public ResponseEntity<ApiResponse<Void>> logout(HttpSession session){
 		if(session.getAttribute("UserCert") == null ) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -47,8 +48,12 @@ public class RestLoginController {
 	}
 	
 	@GetMapping("/check-login")
-	public ResponseEntity<ApiResponse<Boolean>> checklogin(HttpSession session){
-		boolean loggedIn = session.getAttribute("UserCert") != null;
-		return ResponseEntity.ok(ApiResponse.success("檢查登入", loggedIn));
+	public ResponseEntity<ApiResponse<UserCert>> checklogin(HttpSession session){
+		UserCert cert = (UserCert) session.getAttribute("UserCert");
+		if(cert != null) {
+			return ResponseEntity.ok(ApiResponse.success("使用者已登入", cert));
+		}
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+				.body(ApiResponse.error(401, "尚未登入"));
 	}
 }

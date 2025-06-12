@@ -22,7 +22,12 @@ public class EmailService {
 
             helper.setTo(to);
             helper.setSubject("會員註冊確認信");
-            helper.setText("請點選以下連結進行帳號驗證：\n" + confirmUrl, false);
+            helper.setText("""
+            	    <p>您好，感謝註冊。</p>
+            	    <p>請點擊以下連結完成 Email 驗證：</p>
+            	    <p><a href="%s">%s</a></p>
+            	    <p>如果您沒有申請註冊，請忽略此信。</p>
+            	""".formatted(confirmUrl, confirmUrl), true); 
             helper.setFrom(fromAddress);
 
             mailSender.send(message);
